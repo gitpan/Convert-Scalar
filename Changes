@@ -1,5 +1,8 @@
 Revision history for Perl extension Convert::Scalar
 
+0.09  Mon Sep 23 05:40:41 CEST 2002
+	- fixed utf8_length to actually work as documented.
+
 0.08  Fri Jul  5 13:44:17 CEST 2002
 	- check for readonly scalars before attempting to do utf8
           conversions. perl will fail badly if not.

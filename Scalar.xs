@@ -107,7 +107,7 @@ utf8_length(scalar)
 	SV *	scalar
         PROTOTYPE: $
 	CODE:
-        RETVAL = (UV) sv_len_utf8 (scalar);
+        RETVAL = (UV) utf8_length (SvPV_nolen (scalar), SvEND (scalar));
 	OUTPUT:
 	RETVAL
 
