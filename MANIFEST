@@ -1,0 +1,9 @@
+README
+Changes
+MANIFEST
+COPYING
+Makefile.PL
+Scalar.pm
+Scalar.xs
+t/00_load.t
+t/01_utf8.t
