@@ -1,5 +1,9 @@
 Revision history for Perl extension Convert::Scalar
 
+0.02  Sat Jul 15 22:37:36 CEST 2000
+	- added missing functions weaken and unmagic to EXPORT_OK.
+          This happens when you upload too quickly :*]
+
 0.01  Sat Jul 15 20:15:47 CEST 2000
 	- original version; leftover "garbage" from the PApp module
 

@@ -24,9 +24,9 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = 0.01;
+   $VERSION = 0.02;
    @ISA = qw(Exporter);
-   @EXPORT = ();
+   @EXPORT_OK = qw(weaken unmagic);
    %EXPORT_TAGS = (
       taint => [qw(taint untaint)],
       utf8  => [qw(utf8_upgrade utf8_downgrade utf8_encode utf8_decode utf8_length)],
