@@ -24,7 +24,7 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = 0.03;
+   $VERSION = 0.04;
    @ISA = qw(Exporter);
    @EXPORT_OK = qw(weaken unmagic grow);
    %EXPORT_TAGS = (
@@ -53,20 +53,24 @@ the utf8-flag.
 
 =item utf8_on scalar
 
-Similar to C<utf8 scalar, 1>, but does not return the previous state.
+Similar to C<utf8 scalar, 1>, but additionally returns the scalar (the
+argument is still modified in-place).
 
 =item utf8_off scalar
 
-Similar to C<utf8 scalar, 0>, but does not return the previous state.
+Similar to C<utf8 scalar, 0>, but additionally returns the scalar (the
+argument is still modified in-place).
 
 =item utf8_valid scalar [Perl 5.7]
 
 Returns true if the bytes inside the scalar form a valid utf8 string,
-false otherwise.
+false otherwise (the check is independent of the actual encoding perl
+thinks the string is in).
 
 =item utf8_upgrade scalar
 
-Convert the string content of the scalar to its UTF8-encoded form.
+Convert the string content of the scalar in-place to its UTF8-encoded form
+(and also returns it).
 
 =item utf8_downgrade scalar[, fail_ok=0]
 
@@ -115,7 +119,8 @@ interface.
 Sets the memory area used for the scalar to the given length, if the
 current length is less than the new value. This does not affect the
 contents of the scalar, but is only useful to "pre-allocate" memory space
-if you know the scalar will grow.
+if you know the scalar will grow. The return value is the modified scalar
+(the scalar is modified in-place).
 
 =cut
 

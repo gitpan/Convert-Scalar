@@ -1,4 +1,4 @@
-BEGIN { $| = 1; print "1..17\n"; }
+BEGIN { $| = 1; print "1..21\n"; }
 
 use Convert::Scalar ':utf8';
 
@@ -48,4 +48,9 @@ if ($] < 5.007) {
    print utf8_valid $b ? "not " : "", "ok 16\n";
    print utf8_valid $u ? "" : "not ", "ok 17\n";
 }
+
+print utf8_on($u) eq $u ? "" : "not ", "ok 18\n";
+print utf8($u) ? "" : "not ", "ok 19\n";
+print utf8_off($u) eq $u ? "" : "not ", "ok 20\n";
+print utf8($u) ? "not " : "", "ok 21\n";
 

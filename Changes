@@ -1,5 +1,9 @@
 Revision history for Perl extension Convert::Scalar
 
+0.04  Thu Sep 14 21:00:46 CEST 2000
+        - some functions now return the modified scalar, enabling a more
+          "functional" style, e.g. return utf2, join "",...;
+
 0.03  Sun Sep  3 04:55:53 CEST 2000
 	- added "utf8/utf8_on/utf8_off" functions.
         - added grow as an interface to sv_grow.

@@ -29,15 +29,17 @@ void
 utf8_on(scalar)
 	SV *	scalar
         PROTOTYPE: $
-        CODE:
+        PPCODE:
         SvUTF8_on (scalar);
+        XPUSHs (scalar);
 
 void
 utf8_off(scalar)
 	SV *	scalar
         PROTOTYPE: $
-        CODE:
+        PPCODE:
         SvUTF8_off (scalar);
+        XPUSHs (scalar);
 
 int
 utf8_valid(scalar)
@@ -71,8 +73,9 @@ void
 utf8_encode(scalar)
 	SV *	scalar
         PROTOTYPE: $
-	CODE:
+	PPCODE:
         sv_utf8_encode (scalar);
+        XPUSHs (scalar);
 
 UV
 utf8_length(scalar)
@@ -126,6 +129,7 @@ grow(scalar,newlen)
 	SV *	scalar
         U32	newlen
         PROTOTYPE: $$
-        CODE:
+        PPCODE:
         sv_grow (scalar, newlen);
+        XPUSHs (scalar);
 
