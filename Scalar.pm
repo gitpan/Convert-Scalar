@@ -24,7 +24,7 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = 0.04;
+   $VERSION = 0.05;
    @ISA = qw(Exporter);
    @EXPORT_OK = qw(weaken unmagic grow);
    %EXPORT_TAGS = (
@@ -45,7 +45,7 @@ Returns true when the given scalar is marked as utf8, false otherwise. If
 the optional mode argument is given, also forces the interpretation of the
 string to utf8 (mode true) or plain bytes (mode false). The actual (byte-)
 content is not changed. The return value always reflects the state before
-any modifications is done.
+any modification is done.
 
 This function is useful when you "import" utf8-data into perl, or when
 some external function (e.g. storing/retrieving from a database) removes

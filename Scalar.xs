@@ -14,6 +14,7 @@ utf8(scalar,mode=0)
         SV *	mode
         PROTOTYPE: $;$
         CODE:
+        SvGETMAGIC (scalar);
         RETVAL = !!SvUTF8 (scalar);
         if (items > 1)
           {
@@ -30,6 +31,7 @@ utf8_on(scalar)
 	SV *	scalar
         PROTOTYPE: $
         PPCODE:
+        SvGETMAGIC (scalar);
         SvUTF8_on (scalar);
         XPUSHs (scalar);
 
@@ -38,6 +40,7 @@ utf8_off(scalar)
 	SV *	scalar
         PROTOTYPE: $
         PPCODE:
+        SvGETMAGIC (scalar);
         SvUTF8_off (scalar);
         XPUSHs (scalar);
 

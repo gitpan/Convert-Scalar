@@ -1,5 +1,9 @@
 Revision history for Perl extension Convert::Scalar
 
+0.05  Thu Dec  7 03:54:50 CET 2000
+	- now handles get magic in the utf8 functions. I'm not sure
+          wether to SvGETMAGIC the other calls (sv_grow, sv_taint).
+
 0.04  Thu Sep 14 21:00:46 CEST 2000
         - some functions now return the modified scalar, enabling a more
           "functional" style, e.g. return utf2, join "",...;
