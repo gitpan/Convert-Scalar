@@ -26,7 +26,7 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = '1.02';
+   $VERSION = '1.03';
    @ISA = qw(Exporter);
    @EXPORT_OK = qw(weaken unmagic grow);
    %EXPORT_TAGS = (
@@ -188,8 +188,8 @@ inclusion in this module If you want them, write me.
 
 =head1 AUTHOR
 
- Marc Lehmann <pcg@goof.com>
- http://www.goof.com/pcg/marc/
+ Marc Lehmann <schmorp@schmorp.de>
+ http://home.schmorp.de/
 
 =cut
 

@@ -1,4 +1,8 @@
 Revision history for Perl extension Convert::Scalar
+ 
+1.03  Thu Mar  3 18:00:52 CET 2005
+	- require perl 5.008.
+        - change of contact address.
 
 1.02  Fri Nov 26 22:04:10 CET 2004
 	- return copies in all string-modifying functions

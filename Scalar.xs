@@ -2,10 +2,6 @@
 #include "perl.h"
 #include "XSUB.h"
 
-#if PERL_VERSION < 7
-# define is_utf8_string(s,l) (croak ("utf8_valid requires perl 5.7 or higher"), 0)
-#endif
-
 #define RETCOPY(sv)		\
   if (GIMME_V != G_VOID)	\
     { 				\
@@ -17,7 +13,7 @@
 
 MODULE = Convert::Scalar		PACKAGE = Convert::Scalar
 
-int
+bool
 utf8(scalar,mode=0)
 	SV *	scalar
         SV *	mode
