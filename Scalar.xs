@@ -2,7 +2,53 @@
 #include "perl.h"
 #include "XSUB.h"
 
+#if PERL_VERSION < 7
+# define is_utf8_string(s,l) (croak ("utf8_valid requires perl 5.7 or higher"), 0)
+#endif
+
 MODULE = Convert::Scalar		PACKAGE = Convert::Scalar
+
+int
+utf8(scalar,mode=0)
+	SV *	scalar
+        SV *	mode
+        PROTOTYPE: $;$
+        CODE:
+        RETVAL = !!SvUTF8 (scalar);
+        if (items > 1)
+          {
+            if (SvTRUE (mode))
+              SvUTF8_on (scalar);
+            else
+              SvUTF8_off (scalar);
+          }
+	OUTPUT:
+        RETVAL
+
+void
+utf8_on(scalar)
+	SV *	scalar
+        PROTOTYPE: $
+        CODE:
+        SvUTF8_on (scalar);
+
+void
+utf8_off(scalar)
+	SV *	scalar
+        PROTOTYPE: $
+        CODE:
+        SvUTF8_off (scalar);
+
+int
+utf8_valid(scalar)
+	SV *	scalar
+        PROTOTYPE: $
+        CODE:
+        STRLEN len;
+        char *str = SvPV (scalar, len);
+        RETVAL = !!is_utf8_string (str, len);
+	OUTPUT:
+        RETVAL
 
 void
 utf8_upgrade(scalar)
@@ -57,13 +103,29 @@ taint(scalar)
 	SV *	scalar
         PROTOTYPE: $
 	CODE:
-        sv_taint (scalar);
+        SvTAINTED_on (scalar);
+
+int
+tainted(scalar)
+	SV *	scalar
+        PROTOTYPE: $
+        CODE:
+        RETVAL = SvTAINTED (scalar);
+	OUTPUT:
+        RETVAL
 
 void
 untaint(scalar)
 	SV *	scalar
         PROTOTYPE: $
 	CODE:
-        sv_untaint (scalar);
+        SvTAINTED_off (scalar);
 
+void
+grow(scalar,newlen)
+	SV *	scalar
+        U32	newlen
+        PROTOTYPE: $$
+        CODE:
+        sv_grow (scalar, newlen);
 

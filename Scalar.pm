@@ -24,12 +24,12 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = 0.02;
+   $VERSION = 0.03;
    @ISA = qw(Exporter);
-   @EXPORT_OK = qw(weaken unmagic);
+   @EXPORT_OK = qw(weaken unmagic grow);
    %EXPORT_TAGS = (
-      taint => [qw(taint untaint)],
-      utf8  => [qw(utf8_upgrade utf8_downgrade utf8_encode utf8_decode utf8_length)],
+      taint => [qw(taint untaint tainted)],
+      utf8  => [qw(utf8 utf8_on utf8_off utf8_valid utf8_upgrade utf8_downgrade utf8_encode utf8_decode utf8_length)],
    );
 
    require Exporter;
@@ -39,16 +39,42 @@ BEGIN {
    XSLoader::load Convert::Scalar, $VERSION;
 }
 
+=item utf8 scalar[, mode]
+
+Returns true when the given scalar is marked as utf8, false otherwise. If
+the optional mode argument is given, also forces the interpretation of the
+string to utf8 (mode true) or plain bytes (mode false). The actual (byte-)
+content is not changed. The return value always reflects the state before
+any modifications is done.
+
+This function is useful when you "import" utf8-data into perl, or when
+some external function (e.g. storing/retrieving from a database) removes
+the utf8-flag.
+
+=item utf8_on scalar
+
+Similar to C<utf8 scalar, 1>, but does not return the previous state.
+
+=item utf8_off scalar
+
+Similar to C<utf8 scalar, 0>, but does not return the previous state.
+
+=item utf8_valid scalar [Perl 5.7]
+
+Returns true if the bytes inside the scalar form a valid utf8 string,
+false otherwise.
+
 =item utf8_upgrade scalar
 
 Convert the string content of the scalar to its UTF8-encoded form.
 
-=item utf8_downgrade scalar[, fail_ok]
+=item utf8_downgrade scalar[, fail_ok=0]
 
-Attempt to convert the string content of the scalar from UTF8-encoded
-to bytes..  This may not be possible if the string contains characters
-that cannot be represented in a single byte; if this is the case, either
-returns false or, if C<fail_ok> is not true (the default), croaks.
+Attempt to convert the string content of the scalar from UTF8-encoded to
+ISO-8859-1. This may not be possible if the string contains characters
+that cannot be represented in a single byte; if this is the case, it
+leaves the scalar unchanged and either returns false or, if C<fail_ok> is
+not true (the default), croaks.
 
 =item utf8_encode scalar
 
@@ -58,9 +84,9 @@ removed in future versions).
 
 =item utf8_length scalar
 
-Returns the number of characters in the string, counting wide UTF8 bytes
-as a single character, idnependent of wether the scalar is marked as
-containing bytes or mulitbyte characters.
+Returns the number of characters in the string, counting wide UTF8
+characters as a single character, independent of wether the scalar is
+marked as containing bytes or mulitbyte characters.
 
 =item unmagic scalar
 
@@ -68,16 +94,28 @@ Removes magic from the scalar.
 
 =item weaken scalar
 
-Weaken a reference. (See also the WeakRef module (L<WeakRef>).
+Weaken a reference. (See also L<WeakRef>).
 
 =item taint scalar
 
 Taint the scalar.
 
+=item tainted scalar
+
+returns true when the scalar is tainted, false otherwise.
+
 =item untaint scalar, type
 
 Remove the specified magic from the scalar
-(DANGEROUS!), L<perlguts>. Might be removed in future versions.
+(DANGEROUS!), L<perlguts>. L<Untaint>, for a similar but different
+interface.
+
+=item grow scalar, newlen
+
+Sets the memory area used for the scalar to the given length, if the
+current length is less than the new value. This does not affect the
+contents of the scalar, but is only useful to "pre-allocate" memory space
+if you know the scalar will grow.
 
 =cut
 
@@ -90,7 +128,6 @@ Remove the specified magic from the scalar
 The following API functions (L<perlapi>) are considered for future
 inclusion in this module If you want them, write me.
 
- sv_grow
  sv_upgrade
  sv_pvn_force
  sv_pvutf8n_force

@@ -1,5 +1,11 @@
 Revision history for Perl extension Convert::Scalar
 
+0.03  Sun Sep  3 04:55:53 CEST 2000
+	- added "utf8/utf8_on/utf8_off" functions.
+        - added grow as an interface to sv_grow.
+        - added "tainted" and fixed taint/untaint to use the published
+          interface.
+
 0.02  Sat Jul 15 22:37:36 CEST 2000
 	- added missing functions weaken and unmagic to EXPORT_OK.
           This happens when you upload too quickly :*]

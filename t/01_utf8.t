@@ -1,4 +1,4 @@
-BEGIN { $| = 1; print "1..9\n"; }
+BEGIN { $| = 1; print "1..17\n"; }
 
 use Convert::Scalar ':utf8';
 
@@ -25,4 +25,27 @@ print !eval {
    utf8_downgrade($y, 0);
    1;
 } ? "" : "not ", "ok 9\n";
+
+$b = "1234\xc0";
+{
+   use utf8;
+   $u = "\x{1234}";
+}
+
+print utf8($b) ? "not " : "", "ok 10\n";
+print utf8($u) ? "" : "not ", "ok 11\n";
+print utf8($b) ? "not " : "", "ok 12\n";
+print utf8($u) ? "" : "not ", "ok 13\n";
+utf8 $b,1;
+utf8_off $u;
+print utf8($b) ? "" : "not ", "ok 14\n";
+print utf8($u) ? "not " : "", "ok 15\n";
+
+if ($] < 5.007) {
+   print "ok 16\n";
+   print "ok 17\n";
+} else {
+   print utf8_valid $b ? "not " : "", "ok 16\n";
+   print utf8_valid $u ? "" : "not ", "ok 17\n";
+}
 

@@ -16,15 +16,36 @@ DESCRIPTION
      :utf8   all functions with utf8 in their names
      :taint  all functions with taint in their names
 
+    utf8 scalar[, mode]
+        Returns true when the given scalar is marked as utf8, false
+        otherwise. If the optional mode argument is given, also forces the
+        interpretation of the string to utf8 (mode true) or plain bytes
+        (mode false). The actual (byte-) content is not changed. The return
+        value always reflects the state before any modifications is done.
+
+        This function is useful when you "import" utf8-data into perl, or
+        when some external function (e.g. storing/retrieving from a
+        database) removes the utf8-flag.
+
+    utf8_on scalar
+        Similar to `utf8 scalar, 1', but does not return the previous state.
+
+    utf8_off scalar
+        Similar to `utf8 scalar, 0', but does not return the previous state.
+
+    utf8_valid scalar [Perl 5.7]
+        Returns true if the bytes inside the scalar form a valid utf8
+        string, false otherwise.
+
     utf8_upgrade scalar
         Convert the string content of the scalar to its UTF8-encoded form.
 
-    utf8_downgrade scalar[, fail_ok]
+    utf8_downgrade scalar[, fail_ok=0]
         Attempt to convert the string content of the scalar from
-        UTF8-encoded to bytes.. This may not be possible if the string
+        UTF8-encoded to ISO-8859-1. This may not be possible if the string
         contains characters that cannot be represented in a single byte; if
-        this is the case, either returns false or, if `fail_ok' is not true
-        (the default), croaks.
+        this is the case, it leaves the scalar unchanged and either returns
+        false or, if `fail_ok' is not true (the default), croaks.
 
     utf8_encode scalar
         Convert the string value of the scalar to UTF8-encoded, but then
@@ -33,29 +54,37 @@ DESCRIPTION
 
     utf8_length scalar
         Returns the number of characters in the string, counting wide UTF8
-        bytes as a single character, idnependent of wether the scalar is
-        marked as containing bytes or mulitbyte characters.
+        characters as a single character, independent of wether the scalar
+        is marked as containing bytes or mulitbyte characters.
 
     unmagic scalar
         Removes magic from the scalar.
 
     weaken scalar
-        Weaken a reference. (See also the WeakRef module (the WeakRef
-        manpage).
+        Weaken a reference. (See also the WeakRef manpage).
 
     taint scalar
         Taint the scalar.
 
+    tainted scalar
+        returns true when the scalar is tainted, false otherwise.
+
     untaint scalar, type
         Remove the specified magic from the scalar (DANGEROUS!), the
-        perlguts manpage. Might be removed in future versions.
+        perlguts manpage. the Untaint manpage, for a similar but different
+        interface.
+
+    grow scalar, newlen
+        Sets the memory area used for the scalar to the given length, if the
+        current length is less than the new value. This does not affect the
+        contents of the scalar, but is only useful to "pre-allocate" memory
+        space if you know the scalar will grow.
 
   CANDIDATES FOR FUTURE RELEASES
 
     The following API functions (the perlapi manpage) are considered for
     future inclusion in this module If you want them, write me.
 
-     sv_grow
      sv_upgrade
      sv_pvn_force
      sv_pvutf8n_force
