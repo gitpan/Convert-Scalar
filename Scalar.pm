@@ -17,6 +17,7 @@ The following export tags exist:
  :utf8   all functions with utf8 in their name
  :taint  all functions with taint in their name
  :refcnt all functions with refcnt in their name
+ :ok     all *ok-functions.
 
 =over 4
 
@@ -25,13 +26,14 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = 0.09;
+   $VERSION = 0.1;
    @ISA = qw(Exporter);
    @EXPORT_OK = qw(weaken unmagic grow);
    %EXPORT_TAGS = (
       taint  => [qw(taint untaint tainted)],
       utf8   => [qw(utf8 utf8_on utf8_off utf8_valid utf8_upgrade utf8_downgrade utf8_encode utf8_decode utf8_length)],
       refcnt => [qw(refcnt refcnt_inc refcnt_dec refcnt_rv refcnt_inc_rv refcnt_dec_rv)],
+      ok     => [qw(ok uok rok pok nok niok)],
    );
 
    require Exporter;
@@ -152,6 +154,21 @@ Works like C<refcnt_inc>, but dereferences the given reference first.
 =item refcnt_dec_rv scalar
 
 Works like C<refcnt_dec>, but dereferences the given reference first.
+
+=item ok scalar
+
+=item uok scalar
+
+=item rok scalar
+
+=item pok scalar
+
+=item nok scalar
+
+=item niok scalar
+
+Calls SvOK, SvUOK, SvROK, SvPOK, SvNOK or SvNIOK on the given scalar,
+respectively.
 
 =cut
 

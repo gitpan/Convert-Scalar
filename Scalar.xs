@@ -205,3 +205,58 @@ refcnt_dec(scalar)
             scalar = SvRV (scalar);
           }
         SvREFCNT_dec (scalar);
+
+bool
+ok(scalar)
+	SV *	scalar
+        PROTOTYPE: $
+        CODE:
+        RETVAL = SvOK (scalar);
+	OUTPUT:
+        RETVAL
+
+bool
+uok(scalar)
+	SV *	scalar
+        PROTOTYPE: $
+        CODE:
+        RETVAL = SvUOK (scalar);
+	OUTPUT:
+        RETVAL
+
+bool
+rok(scalar)
+	SV *	scalar
+        PROTOTYPE: $
+        CODE:
+        RETVAL = SvROK (scalar);
+	OUTPUT:
+        RETVAL
+
+bool
+pok(scalar)
+	SV *	scalar
+        PROTOTYPE: $
+        CODE:
+        RETVAL = SvPOK (scalar);
+	OUTPUT:
+        RETVAL
+
+bool
+nok(scalar)
+	SV *	scalar
+        PROTOTYPE: $
+        CODE:
+        RETVAL = SvNOK (scalar);
+	OUTPUT:
+        RETVAL
+
+bool
+niok(scalar)
+	SV *	scalar
+        PROTOTYPE: $
+        CODE:
+        RETVAL = SvNIOK (scalar);
+	OUTPUT:
+        RETVAL
+

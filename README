@@ -16,6 +16,7 @@ DESCRIPTION
      :utf8   all functions with utf8 in their name
      :taint  all functions with taint in their name
      :refcnt all functions with refcnt in their name
+     :ok     all *ok-functions.
 
     utf8 scalar[, mode]
         Returns true when the given scalar is marked as utf8, false
@@ -108,6 +109,15 @@ DESCRIPTION
 
     refcnt_dec_rv scalar
         Works like "refcnt_dec", but dereferences the given reference first.
+
+    ok scalar
+    uok scalar
+    rok scalar
+    pok scalar
+    nok scalar
+    niok scalar
+        Calls SvOK, SvUOK, SvROK, SvPOK, SvNOK or SvNIOK on the given
+        scalar, respectively.
 
   CANDIDATES FOR FUTURE RELEASES
     The following API functions (perlapi) are considered for future

@@ -1,5 +1,8 @@
 Revision history for Perl extension Convert::Scalar
 
+0.1   Wed Feb 12 21:40:14 CET 2003
+	- added *ok functions.
+
 0.09  Mon Sep 23 05:40:41 CEST 2002
 	- fixed utf8_length to actually work as documented.
 
