@@ -8,3 +8,4 @@ Scalar.xs
 t/00_load.t
 t/01_utf8.t
 t/02_call.t
+t/03_refcnt.t

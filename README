@@ -13,8 +13,9 @@ DESCRIPTION
 
     The following export tags exist:
 
-     :utf8   all functions with utf8 in their names
-     :taint  all functions with taint in their names
+     :utf8   all functions with utf8 in their name
+     :taint  all functions with taint in their name
+     :refcnt all functions with refcnt in their name
 
     utf8 scalar[, mode]
         Returns true when the given scalar is marked as utf8, false
@@ -65,7 +66,7 @@ DESCRIPTION
         Removes magic from the scalar.
 
     weaken scalar
-        Weaken a reference. (See also the WeakRef manpage).
+        Weaken a reference. (See also WeakRef).
 
     taint scalar
         Taint the scalar.
@@ -74,9 +75,8 @@ DESCRIPTION
         returns true when the scalar is tainted, false otherwise.
 
     untaint scalar, type
-        Remove the specified magic from the scalar (DANGEROUS!), the
-        perlguts manpage. the Untaint manpage, for a similar but different
-        interface.
+        Remove the specified magic from the scalar (DANGEROUS!), perlguts.
+        Untaint, for a similar but different interface.
 
     grow scalar, newlen
         Sets the memory area used for the scalar to the given length, if the
@@ -85,18 +85,38 @@ DESCRIPTION
         space if you know the scalar will grow. The return value is the
         modified scalar (the scalar is modified in-place).
 
-  CANDIDATES FOR FUTURE RELEASES
+    refcnt scalar[, newrefcnt]
+        Returns the current refference count of the given scalar and
+        optionally sets it to the given reference count.
 
-    The following API functions (the perlapi manpage) are considered for
-    future inclusion in this module If you want them, write me.
+    refcnt_inc scalar
+        Increments the reference count of the given scalar inplace.
+
+    refcnt_dec scalar
+        Decrements the reference count of the given scalar inplace. Use
+        "weaken" instead if you understand what this function is fore.
+        Better yet: don't use this module in this case.
+
+    refcnt_rv scalar[, newrefcnt]
+        Works like "refcnt", but dereferences the given reference first.
+        Remember that taking a reference of some object increases it's
+        reference count, so the reference count used by the *_rv-funtions
+        tend to be one higher.
+
+    refcnt_inc_rv scalar
+        Works like "refcnt_inc", but dereferences the given reference first.
+
+    refcnt_dec_rv scalar
+        Works like "refcnt_dec", but dereferences the given reference first.
+
+  CANDIDATES FOR FUTURE RELEASES
+    The following API functions (perlapi) are considered for future
+    inclusion in this module If you want them, write me.
 
      sv_upgrade
      sv_pvn_force
      sv_pvutf8n_force
      the sv2xx family
-
-BUGS
-    This module has not yet been extensively tested.
 
 AUTHOR
      Marc Lehmann <pcg@goof.com>

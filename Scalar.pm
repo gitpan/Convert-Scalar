@@ -14,8 +14,9 @@ is, they modify their scalar argument. No functions are exported by default.
 
 The following export tags exist:
 
- :utf8   all functions with utf8 in their names
- :taint  all functions with taint in their names
+ :utf8   all functions with utf8 in their name
+ :taint  all functions with taint in their name
+ :refcnt all functions with refcnt in their name
 
 =over 4
 
@@ -24,12 +25,13 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = 0.06;
+   $VERSION = 0.07;
    @ISA = qw(Exporter);
    @EXPORT_OK = qw(weaken unmagic grow);
    %EXPORT_TAGS = (
-      taint => [qw(taint untaint tainted)],
-      utf8  => [qw(utf8 utf8_on utf8_off utf8_valid utf8_upgrade utf8_downgrade utf8_encode utf8_decode utf8_length)],
+      taint  => [qw(taint untaint tainted)],
+      utf8   => [qw(utf8 utf8_on utf8_off utf8_valid utf8_upgrade utf8_downgrade utf8_encode utf8_decode utf8_length)],
+      refcnt => [qw(refcnt refcnt_inc refcnt_dec refcnt_rv refcnt_inc_rv refcnt_dec_rv)],
    );
 
    require Exporter;
@@ -122,6 +124,35 @@ contents of the scalar, but is only useful to "pre-allocate" memory space
 if you know the scalar will grow. The return value is the modified scalar
 (the scalar is modified in-place).
 
+=item refcnt scalar[, newrefcnt]
+
+Returns the current refference count of the given scalar and optionally sets it to
+the given reference count.
+
+=item refcnt_inc scalar
+
+Increments the reference count of the given scalar inplace.
+
+=item refcnt_dec scalar
+
+Decrements the reference count of the given scalar inplace. Use C<weaken>
+instead if you understand what this function is fore. Better yet: don't
+use this module in this case.
+
+=item refcnt_rv scalar[, newrefcnt]
+
+Works like C<refcnt>, but dereferences the given reference first. Remember
+that taking a reference of some object increases it's reference count, so
+the reference count used by the C<*_rv>-funtions tend to be one higher.
+
+=item refcnt_inc_rv scalar
+
+Works like C<refcnt_inc>, but dereferences the given reference first.
+
+=item refcnt_dec_rv scalar
+
+Works like C<refcnt_dec>, but dereferences the given reference first.
+
 =cut
 
 1;
@@ -137,10 +168,6 @@ inclusion in this module If you want them, write me.
  sv_pvn_force
  sv_pvutf8n_force
  the sv2xx family
-
-=head1 BUGS
-
-This module has not yet been extensively tested.
 
 =head1 AUTHOR
 

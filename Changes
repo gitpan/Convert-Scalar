@@ -1,5 +1,8 @@
 Revision history for Perl extension Convert::Scalar
 
+0.07  Sun Jan 20 04:50:53 CET 2002
+	- added refcnt_inc, refcnt_dec, refcnt etc. methods.
+
 0.06  Thu Jan  4 02:24:23 CET 2001
 	- utf8_upgrade now really returns the argument
         - all functions that return the argument now do so correctly

@@ -142,3 +142,49 @@ grow(scalar,newlen)
         if (GIMME_V != G_VOID)
           XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
 
+int
+refcnt(scalar,newrefcnt=0)
+	SV *	scalar
+        int	newrefcnt
+        PROTOTYPE: $;$
+        ALIAS:
+          refcnt_rv = 1
+        CODE:
+        if (ix)
+          {
+            if (!SvROK (scalar)) croak ("refcnt_rv requires a reference as it's first argument");
+            scalar = SvRV (scalar);
+          }
+        RETVAL = SvREFCNT (scalar);
+        if (items > 1)
+          SvREFCNT (scalar) = newrefcnt;
+	OUTPUT:
+        RETVAL
+
+void
+refcnt_inc(scalar)
+	SV *	scalar
+        ALIAS:
+          refcnt_inc_rv = 1
+        PROTOTYPE: $
+        CODE:
+        if (ix)
+          {
+            if (!SvROK (scalar)) croak ("refcnt_inc_rv requires a reference as it's first argument");
+            scalar = SvRV (scalar);
+          }
+        SvREFCNT_inc (scalar);
+
+void
+refcnt_dec(scalar)
+	SV *	scalar
+        ALIAS:
+          refcnt_dec_rv = 1
+        PROTOTYPE: $
+        CODE:
+        if (ix)
+          {
+            if (!SvROK (scalar)) croak ("refcnt_dec_rv requires a reference as it's first argument");
+            scalar = SvRV (scalar);
+          }
+        SvREFCNT_dec (scalar);
