@@ -18,6 +18,8 @@ utf8(scalar,mode=0)
         RETVAL = !!SvUTF8 (scalar);
         if (items > 1)
           {
+            if (SvREADONLY (scalar))
+              croak ("Convert::Scalar::utf8 called on read only scalar");
             if (SvTRUE (mode))
               SvUTF8_on (scalar);
             else
@@ -31,6 +33,9 @@ utf8_on(scalar)
 	SV *	scalar
         PROTOTYPE: $
         PPCODE:
+        if (SvREADONLY (scalar))
+          croak ("Convert::Scalar::utf8_on called on read only scalar");
+
         SvGETMAGIC (scalar);
         SvUTF8_on (scalar);
         if (GIMME_V != G_VOID)
@@ -41,6 +46,9 @@ utf8_off(scalar)
 	SV *	scalar
         PROTOTYPE: $
         PPCODE:
+        if (SvREADONLY (scalar))
+          croak ("Convert::Scalar::utf8_off called on read only scalar");
+
         SvGETMAGIC (scalar);
         SvUTF8_off (scalar);
         if (GIMME_V != G_VOID)
@@ -62,6 +70,9 @@ utf8_upgrade(scalar)
 	SV *	scalar
         PROTOTYPE: $
 	PPCODE:
+        if (SvREADONLY (scalar))
+          croak ("Convert::Scalar::utf8_upgrade called on read only scalar");
+
         sv_utf8_upgrade(scalar);
         if (GIMME_V != G_VOID)
           XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
@@ -72,6 +83,9 @@ utf8_downgrade(scalar, fail_ok = 0)
 	bool	fail_ok
         PROTOTYPE: $;$
 	CODE:
+        if (SvREADONLY (scalar))
+          croak ("Convert::Scalar::utf8_downgrade called on read only scalar");
+
         RETVAL = sv_utf8_downgrade (scalar, fail_ok);
 	OUTPUT:
 	RETVAL
@@ -81,6 +95,9 @@ utf8_encode(scalar)
 	SV *	scalar
         PROTOTYPE: $
 	PPCODE:
+        if (SvREADONLY (scalar))
+          croak ("Convert::Scalar::utf8_encode called on read only scalar");
+
         sv_utf8_encode (scalar);
         if (GIMME_V != G_VOID)
           XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));

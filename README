@@ -86,7 +86,7 @@ DESCRIPTION
         modified scalar (the scalar is modified in-place).
 
     refcnt scalar[, newrefcnt]
-        Returns the current refference count of the given scalar and
+        Returns the current reference count of the given scalar and
         optionally sets it to the given reference count.
 
     refcnt_inc scalar

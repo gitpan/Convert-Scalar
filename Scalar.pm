@@ -25,7 +25,7 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = 0.07;
+   $VERSION = 0.08;
    @ISA = qw(Exporter);
    @EXPORT_OK = qw(weaken unmagic grow);
    %EXPORT_TAGS = (
@@ -126,7 +126,7 @@ if you know the scalar will grow. The return value is the modified scalar
 
 =item refcnt scalar[, newrefcnt]
 
-Returns the current refference count of the given scalar and optionally sets it to
+Returns the current reference count of the given scalar and optionally sets it to
 the given reference count.
 
 =item refcnt_inc scalar
