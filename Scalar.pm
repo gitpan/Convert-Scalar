@@ -24,7 +24,7 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = 0.05;
+   $VERSION = 0.06;
    @ISA = qw(Exporter);
    @EXPORT_OK = qw(weaken unmagic grow);
    %EXPORT_TAGS = (

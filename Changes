@@ -1,5 +1,10 @@
 Revision history for Perl extension Convert::Scalar
 
+0.06  Thu Jan  4 02:24:23 CET 2001
+	- utf8_upgrade now really returns the argument
+        - all functions that return the argument now do so correctly
+          in all cases, but only when called in a non-void context.
+
 0.05  Thu Dec  7 03:54:50 CET 2000
 	- now handles get magic in the utf8 functions. I'm not sure
           wether to SvGETMAGIC the other calls (sv_grow, sv_taint).

@@ -33,7 +33,8 @@ utf8_on(scalar)
         PPCODE:
         SvGETMAGIC (scalar);
         SvUTF8_on (scalar);
-        XPUSHs (scalar);
+        if (GIMME_V != G_VOID)
+          XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
 
 void
 utf8_off(scalar)
@@ -42,7 +43,8 @@ utf8_off(scalar)
         PPCODE:
         SvGETMAGIC (scalar);
         SvUTF8_off (scalar);
-        XPUSHs (scalar);
+        if (GIMME_V != G_VOID)
+          XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
 
 int
 utf8_valid(scalar)
@@ -59,8 +61,10 @@ void
 utf8_upgrade(scalar)
 	SV *	scalar
         PROTOTYPE: $
-	CODE:
+	PPCODE:
         sv_utf8_upgrade(scalar);
+        if (GIMME_V != G_VOID)
+          XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
 
 bool
 utf8_downgrade(scalar, fail_ok = 0)
@@ -78,7 +82,8 @@ utf8_encode(scalar)
         PROTOTYPE: $
 	PPCODE:
         sv_utf8_encode (scalar);
-        XPUSHs (scalar);
+        if (GIMME_V != G_VOID)
+          XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
 
 UV
 utf8_length(scalar)
@@ -134,5 +139,6 @@ grow(scalar,newlen)
         PROTOTYPE: $$
         PPCODE:
         sv_grow (scalar, newlen);
-        XPUSHs (scalar);
+        if (GIMME_V != G_VOID)
+          XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
 
