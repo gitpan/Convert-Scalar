@@ -63,8 +63,8 @@ DESCRIPTION
         characters as a single character, independent of wether the scalar
         is marked as containing bytes or mulitbyte characters.
 
-    unmagic scalar
-        Removes magic from the scalar.
+    unmagic scalar, type
+        Remove the specified magic from the scalar (DANGEROUS!).
 
     weaken scalar
         Weaken a reference. (See also WeakRef).
@@ -75,9 +75,8 @@ DESCRIPTION
     tainted scalar
         returns true when the scalar is tainted, false otherwise.
 
-    untaint scalar, type
-        Remove the specified magic from the scalar (DANGEROUS!), perlguts.
-        Untaint, for a similar but different interface.
+    untaint scalar
+        Remove the tainted flag from the specified scalar.
 
     grow scalar, newlen
         Sets the memory area used for the scalar to the given length, if the

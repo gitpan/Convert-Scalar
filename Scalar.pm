@@ -26,7 +26,7 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = '1.0';
+   $VERSION = '1.01';
    @ISA = qw(Exporter);
    @EXPORT_OK = qw(weaken unmagic grow);
    %EXPORT_TAGS = (
@@ -96,9 +96,9 @@ Returns the number of characters in the string, counting wide UTF8
 characters as a single character, independent of wether the scalar is
 marked as containing bytes or mulitbyte characters.
 
-=item unmagic scalar
+=item unmagic scalar, type
 
-Removes magic from the scalar.
+Remove the specified magic from the scalar (DANGEROUS!).
 
 =item weaken scalar
 
@@ -112,11 +112,9 @@ Taint the scalar.
 
 returns true when the scalar is tainted, false otherwise.
 
-=item untaint scalar, type
+=item untaint scalar
 
-Remove the specified magic from the scalar
-(DANGEROUS!), L<perlguts>. L<Untaint>, for a similar but different
-interface.
+Remove the tainted flag from the specified scalar.
 
 =item grow scalar, newlen
 
