@@ -26,7 +26,7 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = 0.1;
+   $VERSION = '1.0';
    @ISA = qw(Exporter);
    @EXPORT_OK = qw(weaken unmagic grow);
    %EXPORT_TAGS = (
@@ -143,9 +143,11 @@ use this module in this case.
 
 =item refcnt_rv scalar[, newrefcnt]
 
-Works like C<refcnt>, but dereferences the given reference first. Remember
-that taking a reference of some object increases it's reference count, so
-the reference count used by the C<*_rv>-funtions tend to be one higher.
+Works like C<refcnt>, but dereferences the given reference first. This is
+useful to find the reference count of arrays or hashes, which cnanot be
+passed directly. Remember that taking a reference of some object increases
+it's reference count, so the reference count used by the C<*_rv>-functions
+tend to be one higher.
 
 =item refcnt_inc_rv scalar
 

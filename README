@@ -100,9 +100,10 @@ DESCRIPTION
 
     refcnt_rv scalar[, newrefcnt]
         Works like "refcnt", but dereferences the given reference first.
-        Remember that taking a reference of some object increases it's
-        reference count, so the reference count used by the *_rv-funtions
-        tend to be one higher.
+        This is useful to find the reference count of arrays or hashes,
+        which cnanot be passed directly. Remember that taking a reference of
+        some object increases it's reference count, so the reference count
+        used by the *_rv-functions tend to be one higher.
 
     refcnt_inc_rv scalar
         Works like "refcnt_inc", but dereferences the given reference first.
