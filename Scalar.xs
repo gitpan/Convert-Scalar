@@ -6,6 +6,15 @@
 # define is_utf8_string(s,l) (croak ("utf8_valid requires perl 5.7 or higher"), 0)
 #endif
 
+#define RETCOPY(sv)		\
+  if (GIMME_V != G_VOID)	\
+    { 				\
+      dXSTARG;			\
+      sv_setsv (TARG, (sv));	\
+      EXTEND (SP, 1);		\
+      PUSHs (TARG);		\
+    }
+
 MODULE = Convert::Scalar		PACKAGE = Convert::Scalar
 
 int
@@ -38,8 +47,7 @@ utf8_on(scalar)
 
         SvGETMAGIC (scalar);
         SvUTF8_on (scalar);
-        if (GIMME_V != G_VOID)
-          XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
+        RETCOPY (scalar);
 
 void
 utf8_off(scalar)
@@ -51,8 +59,7 @@ utf8_off(scalar)
 
         SvGETMAGIC (scalar);
         SvUTF8_off (scalar);
-        if (GIMME_V != G_VOID)
-          XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
+        RETCOPY (scalar);
 
 int
 utf8_valid(scalar)
@@ -74,8 +81,7 @@ utf8_upgrade(scalar)
           croak ("Convert::Scalar::utf8_upgrade called on read only scalar");
 
         sv_utf8_upgrade(scalar);
-        if (GIMME_V != G_VOID)
-          XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
+        RETCOPY (scalar);
 
 bool
 utf8_downgrade(scalar, fail_ok = 0)
@@ -99,8 +105,7 @@ utf8_encode(scalar)
           croak ("Convert::Scalar::utf8_encode called on read only scalar");
 
         sv_utf8_encode (scalar);
-        if (GIMME_V != G_VOID)
-          XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
+        RETCOPY (scalar);
 
 UV
 utf8_length(scalar)
