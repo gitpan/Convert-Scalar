@@ -88,7 +88,7 @@ utf8_downgrade(scalar, fail_ok = 0)
         if (SvREADONLY (scalar))
           croak ("Convert::Scalar::utf8_downgrade called on read only scalar");
 
-        RETVAL = sv_utf8_downgrade (scalar, fail_ok);
+        RETVAL = !!sv_utf8_downgrade (scalar, fail_ok);
 	OUTPUT:
 	RETVAL
 
@@ -134,12 +134,12 @@ taint(scalar)
 	CODE:
         SvTAINTED_on (scalar);
 
-int
+bool
 tainted(scalar)
 	SV *	scalar
         PROTOTYPE: $
         CODE:
-        RETVAL = SvTAINTED (scalar);
+        RETVAL = !!SvTAINTED (scalar);
 	OUTPUT:
         RETVAL
 
@@ -212,7 +212,7 @@ ok(scalar)
 	SV *	scalar
         PROTOTYPE: $
         CODE:
-        RETVAL = SvOK (scalar);
+        RETVAL = !!SvOK (scalar);
 	OUTPUT:
         RETVAL
 
@@ -221,7 +221,7 @@ uok(scalar)
 	SV *	scalar
         PROTOTYPE: $
         CODE:
-        RETVAL = SvUOK (scalar);
+        RETVAL = !!SvUOK (scalar);
 	OUTPUT:
         RETVAL
 
@@ -230,7 +230,7 @@ rok(scalar)
 	SV *	scalar
         PROTOTYPE: $
         CODE:
-        RETVAL = SvROK (scalar);
+        RETVAL = !!SvROK (scalar);
 	OUTPUT:
         RETVAL
 
@@ -239,7 +239,7 @@ pok(scalar)
 	SV *	scalar
         PROTOTYPE: $
         CODE:
-        RETVAL = SvPOK (scalar);
+        RETVAL = !!SvPOK (scalar);
 	OUTPUT:
         RETVAL
 
@@ -248,7 +248,7 @@ nok(scalar)
 	SV *	scalar
         PROTOTYPE: $
         CODE:
-        RETVAL = SvNOK (scalar);
+        RETVAL = !!SvNOK (scalar);
 	OUTPUT:
         RETVAL
 
@@ -257,7 +257,7 @@ niok(scalar)
 	SV *	scalar
         PROTOTYPE: $
         CODE:
-        RETVAL = SvNIOK (scalar);
+        RETVAL = !!SvNIOK (scalar);
 	OUTPUT:
         RETVAL
 

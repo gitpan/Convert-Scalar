@@ -1,4 +1,8 @@
 Revision history for Perl extension Convert::Scalar
+
+1.04  Fri Mar  7 11:32:53 CET 2008
+	- work around 5.10 api changes in *ok functions
+          (reported by David Aguilar).
  
 1.03  Thu Mar  3 18:00:52 CET 2005
 	- require perl 5.008.
