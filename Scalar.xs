@@ -14,9 +14,7 @@
 MODULE = Convert::Scalar		PACKAGE = Convert::Scalar
 
 bool
-utf8(scalar,mode=0)
-	SV *	scalar
-        SV *	mode
+utf8 (SV *scalar, SV *mode = NO_INIT)
         PROTOTYPE: $;$
         CODE:
         SvGETMAGIC (scalar);
@@ -34,8 +32,7 @@ utf8(scalar,mode=0)
         RETVAL
 
 void
-utf8_on(scalar)
-	SV *	scalar
+utf8_on (SV *scalar)
         PROTOTYPE: $
         PPCODE:
         if (SvREADONLY (scalar))
@@ -46,8 +43,7 @@ utf8_on(scalar)
         RETCOPY (scalar);
 
 void
-utf8_off(scalar)
-	SV *	scalar
+utf8_off (SV *scalar)
         PROTOTYPE: $
         PPCODE:
         if (SvREADONLY (scalar))
@@ -58,8 +54,7 @@ utf8_off(scalar)
         RETCOPY (scalar);
 
 int
-utf8_valid(scalar)
-	SV *	scalar
+utf8_valid (SV *scalar)
         PROTOTYPE: $
         CODE:
         STRLEN len;
@@ -69,8 +64,7 @@ utf8_valid(scalar)
         RETVAL
 
 void
-utf8_upgrade(scalar)
-	SV *	scalar
+utf8_upgrade (SV *scalar)
         PROTOTYPE: $
 	PPCODE:
         if (SvREADONLY (scalar))
@@ -80,9 +74,7 @@ utf8_upgrade(scalar)
         RETCOPY (scalar);
 
 bool
-utf8_downgrade(scalar, fail_ok = 0)
-	SV *	scalar
-	bool	fail_ok
+utf8_downgrade (SV *scalar, bool fail_ok = 0)
         PROTOTYPE: $;$
 	CODE:
         if (SvREADONLY (scalar))
@@ -93,8 +85,7 @@ utf8_downgrade(scalar, fail_ok = 0)
 	RETVAL
 
 void
-utf8_encode(scalar)
-	SV *	scalar
+utf8_encode (SV *scalar)
         PROTOTYPE: $
 	PPCODE:
         if (SvREADONLY (scalar))
@@ -104,39 +95,60 @@ utf8_encode(scalar)
         RETCOPY (scalar);
 
 UV
-utf8_length(scalar)
-	SV *	scalar
+utf8_length (SV *scalar)
         PROTOTYPE: $
 	CODE:
         RETVAL = (UV) utf8_length (SvPV_nolen (scalar), SvEND (scalar));
 	OUTPUT:
 	RETVAL
 
+bool
+readonly (SV *scalar, SV *on = NO_INIT)
+        PROTOTYPE: $;$
+        CODE:
+        RETVAL = SvREADONLY (scalar);
+        if (items > 1)
+          {
+            if (SvTRUE (on))
+              SvREADONLY_on (scalar);
+            else
+              SvREADONLY_off (scalar);
+          }
+	OUTPUT:
+        RETVAL
+
 void
-unmagic(scalar, type)
-	SV *	scalar
-        char	type
+readonly_on (SV *scalar)
+        PROTOTYPE: $
+        CODE:
+        SvREADONLY_on (scalar);
+
+void
+readonly_off (SV *scalar)
+        PROTOTYPE: $
+        CODE:
+        SvREADONLY_off (scalar);
+
+void
+unmagic (SV *scalar, char type)
         PROTOTYPE: $
 	CODE:
         sv_unmagic (scalar, type);
 
 void
-weaken(scalar)
-	SV *	scalar
+weaken (SV *scalar)
         PROTOTYPE: $
 	CODE:
         sv_rvweaken (scalar);
 
 void
-taint(scalar)
-	SV *	scalar
+taint (SV *scalar)
         PROTOTYPE: $
 	CODE:
         SvTAINTED_on (scalar);
 
 bool
-tainted(scalar)
-	SV *	scalar
+tainted (SV *scalar)
         PROTOTYPE: $
         CODE:
         RETVAL = !!SvTAINTED (scalar);
@@ -144,26 +156,62 @@ tainted(scalar)
         RETVAL
 
 void
-untaint(scalar)
-	SV *	scalar
+untaint (SV *scalar)
         PROTOTYPE: $
 	CODE:
         SvTAINTED_off (scalar);
 
+STRLEN
+len (SV *scalar)
+	PROTOTYPE: $
+	CODE:
+        if (SvTYPE (scalar) < SVt_PV)
+          XSRETURN_UNDEF;
+        RETVAL = SvLEN (scalar);
+	OUTPUT:
+        RETVAL
+
 void
-grow(scalar,newlen)
-	SV *	scalar
-        U32	newlen
+grow (SV *scalar, STRLEN newlen)
         PROTOTYPE: $$
         PPCODE:
         sv_grow (scalar, newlen);
         if (GIMME_V != G_VOID)
           XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
 
+void
+extend (SV *scalar, STRLEN addlen)
+        PROTOTYPE: $$
+        PPCODE:
+{
+	if (SvTYPE (scalar) < SVt_PV)
+          sv_upgrade (scalar, SVt_PV);
+
+        if (SvCUR (scalar) + addlen >= SvLEN (scalar))
+          {
+            STRLEN l = SvLEN (scalar);
+            STRLEN o = SvCUR (scalar) + addlen >= 4096 ? sizeof (void *) * 4 : 0;
+
+            if (l < 64)
+              l = 64;
+
+            /* for big sizes, leave a bit of space for malloc management, and assume 4kb or smaller pages */
+            addlen += o;
+
+            while (SvCUR (scalar) + addlen >= l)
+              l <<= 1;
+
+            l -= o;
+
+            sv_grow (scalar, l);
+          }
+
+        if (GIMME_V != G_VOID)
+          XPUSHs (sv_2mortal (SvREFCNT_inc (scalar)));
+}
+
 int
-refcnt(scalar,newrefcnt=0)
-	SV *	scalar
-        int	newrefcnt
+refcnt (SV *scalar, U32 newrefcnt = NO_INIT)
         PROTOTYPE: $;$
         ALIAS:
           refcnt_rv = 1
@@ -180,8 +228,7 @@ refcnt(scalar,newrefcnt=0)
         RETVAL
 
 void
-refcnt_inc(scalar)
-	SV *	scalar
+refcnt_inc (SV *scalar)
         ALIAS:
           refcnt_inc_rv = 1
         PROTOTYPE: $
@@ -194,8 +241,7 @@ refcnt_inc(scalar)
         SvREFCNT_inc (scalar);
 
 void
-refcnt_dec(scalar)
-	SV *	scalar
+refcnt_dec (SV *scalar)
         ALIAS:
           refcnt_dec_rv = 1
         PROTOTYPE: $
@@ -208,8 +254,7 @@ refcnt_dec(scalar)
         SvREFCNT_dec (scalar);
 
 bool
-ok(scalar)
-	SV *	scalar
+ok (SV *scalar)
         PROTOTYPE: $
         CODE:
         RETVAL = !!SvOK (scalar);
@@ -217,8 +262,7 @@ ok(scalar)
         RETVAL
 
 bool
-uok(scalar)
-	SV *	scalar
+uok (SV *scalar)
         PROTOTYPE: $
         CODE:
         RETVAL = !!SvUOK (scalar);
@@ -226,8 +270,7 @@ uok(scalar)
         RETVAL
 
 bool
-rok(scalar)
-	SV *	scalar
+rok (SV *scalar)
         PROTOTYPE: $
         CODE:
         RETVAL = !!SvROK (scalar);
@@ -235,8 +278,7 @@ rok(scalar)
         RETVAL
 
 bool
-pok(scalar)
-	SV *	scalar
+pok (SV *scalar)
         PROTOTYPE: $
         CODE:
         RETVAL = !!SvPOK (scalar);
@@ -244,8 +286,7 @@ pok(scalar)
         RETVAL
 
 bool
-nok(scalar)
-	SV *	scalar
+nok (SV *scalar)
         PROTOTYPE: $
         CODE:
         RETVAL = !!SvNOK (scalar);
@@ -253,8 +294,7 @@ nok(scalar)
         RETVAL
 
 bool
-niok(scalar)
-	SV *	scalar
+niok (SV *scalar)
         PROTOTYPE: $
         CODE:
         RETVAL = !!SvNIOK (scalar);

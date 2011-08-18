@@ -63,6 +63,16 @@ DESCRIPTION
         characters as a single character, independent of wether the scalar
         is marked as containing bytes or mulitbyte characters.
 
+    $old = readonly scalar[, $new]
+        Returns whether the scalar is currently readonly, and sets or clears
+        the readonly status if a new status is given.
+
+    readonly_on scalar
+        Sets the readonly flag on the scalar.
+
+    readonly_off scalar
+        Clears the readonly flag on the scalar.
+
     unmagic scalar, type
         Remove the specified magic from the scalar (DANGEROUS!).
 
@@ -78,12 +88,32 @@ DESCRIPTION
     untaint scalar
         Remove the tainted flag from the specified scalar.
 
-    grow scalar, newlen
+    length = len scalar
+        Returns SvLEN (scalar), that is, the actual number of bytes
+        allocated to the string value, or "undef", is the scalar has no
+        string value.
+
+    scalar = grow scalar, newlen
         Sets the memory area used for the scalar to the given length, if the
         current length is less than the new value. This does not affect the
         contents of the scalar, but is only useful to "pre-allocate" memory
         space if you know the scalar will grow. The return value is the
         modified scalar (the scalar is modified in-place).
+
+    scalar = extend scalar, addlen
+        Reserves enough space in the scalar so that addlen bytes can be
+        appended without reallocating it. The actual contents of the scalar
+        will not be affected. The modified scalar will also be returned.
+
+        This function is meant to make append workloads efficient - if you
+        append a short string to a scalar many times (millions of times),
+        then perl will have to reallocate and copy the scalar basically
+        every time.
+
+        If you instead use "extend $scalar, length $shortstring", then
+        Convert::Scalar will use a "size to next power of two, roughly"
+        algorithm, so as the scalar grows, perl will have to resize and copy
+        it less and less often.
 
     refcnt scalar[, newrefcnt]
         Returns the current reference count of the given scalar and

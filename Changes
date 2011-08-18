@@ -1,5 +1,10 @@
 Revision history for Perl extension Convert::Scalar
 
+1.1  Thu Aug 18 20:59:01 CEST 2011
+	- added readonly, readonly_on, readonly_off.
+        - add extend and len.
+        - modernise xs syntax, make some functions more efficient.
+
 1.04  Fri Mar  7 11:32:53 CET 2008
 	- work around 5.10 api changes in *ok functions
           (reported by David Aguilar).

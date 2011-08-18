@@ -26,9 +26,9 @@ The following export tags exist:
 package Convert::Scalar;
 
 BEGIN {
-   $VERSION = '1.04';
+   $VERSION = '1.1';
    @ISA = qw(Exporter);
-   @EXPORT_OK = qw(weaken unmagic grow);
+   @EXPORT_OK = qw(readonly readonly_on readonly_off weaken unmagic len grow extend);
    %EXPORT_TAGS = (
       taint  => [qw(taint untaint tainted)],
       utf8   => [qw(utf8 utf8_on utf8_off utf8_valid utf8_upgrade utf8_downgrade utf8_encode utf8_decode utf8_length)],
@@ -96,6 +96,19 @@ Returns the number of characters in the string, counting wide UTF8
 characters as a single character, independent of wether the scalar is
 marked as containing bytes or mulitbyte characters.
 
+=item $old = readonly scalar[, $new]
+
+Returns whether the scalar is currently readonly, and sets or clears the
+readonly status if a new status is given.
+
+=item readonly_on scalar
+
+Sets the readonly flag on the scalar.
+
+=item readonly_off scalar
+
+Clears the readonly flag on the scalar.
+
 =item unmagic scalar, type
 
 Remove the specified magic from the scalar (DANGEROUS!).
@@ -116,13 +129,33 @@ returns true when the scalar is tainted, false otherwise.
 
 Remove the tainted flag from the specified scalar.
 
-=item grow scalar, newlen
+=item length = len scalar
+
+Returns SvLEN (scalar), that is, the actual number of bytes allocated to
+the string value, or C<undef>, is the scalar has no string value.
+
+=item scalar = grow scalar, newlen
 
 Sets the memory area used for the scalar to the given length, if the
 current length is less than the new value. This does not affect the
 contents of the scalar, but is only useful to "pre-allocate" memory space
 if you know the scalar will grow. The return value is the modified scalar
 (the scalar is modified in-place).
+
+=item scalar = extend scalar, addlen
+
+Reserves enough space in the scalar so that addlen bytes can be appended
+without reallocating it. The actual contents of the scalar will not be
+affected. The modified scalar will also be returned.
+
+This function is meant to make append workloads efficient - if you append
+a short string to a scalar many times (millions of times), then perl will
+have to reallocate and copy the scalar basically every time.
+
+If you instead use C<extend $scalar, length $shortstring>, then
+Convert::Scalar will use a "size to next power of two, roughly" algorithm,
+so as the scalar grows, perl will have to resize and copy it less and less
+often.
 
 =item refcnt scalar[, newrefcnt]
 
